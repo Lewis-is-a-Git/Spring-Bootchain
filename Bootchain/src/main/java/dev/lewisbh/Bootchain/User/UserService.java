@@ -9,7 +9,7 @@ public class UserService {
 
 	public List<User> getUsers() {
 		// we want this to come from the database
-		return List.of(new User(0, "Rocky"), new User(1, "Lewis"));
+		return List.of(new User(0, "Rocky", "password"), new User(1, "Lewis", "password"));
 	}
 
 }
