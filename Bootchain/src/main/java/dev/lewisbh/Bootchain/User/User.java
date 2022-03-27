@@ -1,28 +1,34 @@
 package dev.lewisbh.Bootchain.User;
 
+import static javax.persistence.GenerationType.SEQUENCE;
+
 import java.math.BigDecimal;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
-@Entity(name = "User")
-@Table(name = "user", uniqueConstraints = { @UniqueConstraint(name = "username_unique", columnNames = "username") })
+@Entity(name = "Users")
+@Table(name = "users", uniqueConstraints = { @UniqueConstraint(name = "username_unique", columnNames = "username") })
 public class User {
-
 	public User(int id, String username, String password) {
-		super();
 		this.id = id;
 		this.username = username;
 		this.balance = BigDecimal.ZERO;
 		this.password = password;
 	}
 
-	public int getId() {
+	public User(String username, String password) {
+		this.username = username;
+		this.balance = BigDecimal.ZERO;
+		this.password = password;
+	}
+
+	public long getId() {
 		return id;
 	}
 
@@ -52,13 +58,18 @@ public class User {
 	}
 
 	@Id
-	@SequenceGenerator(name = "user_sequence", sequenceName = "user_sequence", allocationSize = 1
+	@SequenceGenerator(name = "user_sequence", sequenceName = "user_sequence", allocationSize = 1)
+	@GeneratedValue(strategy = SEQUENCE, generator = "user_sequence")
+	@Column(name = "id")
+	private long id;
 
-	)
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "userr_sequence")
-	private int id;
+	@Column(name = "username", nullable = false, columnDefinition = "TEXT")
 	private String username;
+
+	@Column(name = "balance", nullable = false)
 	private BigDecimal balance;
+
+	@Column(name = "password", nullable = false, columnDefinition = "TEXT")
 	private String password;
 
 }
