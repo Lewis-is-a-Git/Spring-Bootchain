@@ -72,4 +72,8 @@ public class User {
 	@Column(name = "password", nullable = false, columnDefinition = "TEXT")
 	private String password;
 
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
 }
