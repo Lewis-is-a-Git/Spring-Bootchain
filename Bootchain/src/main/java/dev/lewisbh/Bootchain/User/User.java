@@ -15,6 +15,12 @@ import javax.persistence.UniqueConstraint;
 @Entity(name = "Users")
 @Table(name = "users", uniqueConstraints = { @UniqueConstraint(name = "username_unique", columnNames = "username") })
 public class User {
+
+	/**
+	 * @param id
+	 * @param username
+	 * @param password
+	 */
 	public User(int id, String username, String password) {
 		this.id = id;
 		this.username = username;
@@ -22,6 +28,10 @@ public class User {
 		this.password = password;
 	}
 
+	/**
+	 * @param username
+	 * @param password
+	 */
 	public User(String username, String password) {
 		this.username = username;
 		this.balance = BigDecimal.ZERO;
