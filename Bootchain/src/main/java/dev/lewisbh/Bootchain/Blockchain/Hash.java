@@ -6,9 +6,11 @@ import java.security.MessageDigest;
 
 public class Hash {
 
-	public static String hash(Block block) throws IOException {
+	public static String hash(Block block, Integer nonce) throws IOException {
 		try {
 			MessageDigest md = MessageDigest.getInstance("SHA-256");
+
+			block.setNonce(nonce);
 
 			byte[] messageDigest = md.digest(block.toByteArray());
 

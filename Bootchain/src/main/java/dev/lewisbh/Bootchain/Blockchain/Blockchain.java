@@ -39,14 +39,22 @@ public class Blockchain {
 		return getLastBlock().index + 1;
 	}
 
-	public String hashBlock(Block block) {
+	public String hashBlock(Block block, Integer nonce) {
 		try {
-			return Hash.hash(block);
+			return Hash.hash(block, nonce);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		return null;
+	}
 
+	public Integer proofOfWork(Hash128 previousHash) {
+		// hash block until first four characters are 0 -> "0000..."
+		Integer nonce = 0;
+		while (!hashBlock(getLastBlock(), nonce).substring(0, 4).equals("0000")) {
+			nonce++;
+		}
+		return nonce;
 	}
 
 }

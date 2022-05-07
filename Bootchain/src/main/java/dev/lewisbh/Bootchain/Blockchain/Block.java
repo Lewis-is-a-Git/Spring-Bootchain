@@ -17,6 +17,7 @@ public class Block implements Serializable {
 	List<Transaction> transactions;
 	Integer nonce;
 	Hash128 hash;
+	Hash128 previousHash;
 
 	public Block(Integer index, DateTime now, List<Transaction> transactions, Integer nonce, Hash128 currentHash,
 			Hash128 previousBlockHash) {
@@ -25,6 +26,11 @@ public class Block implements Serializable {
 		this.transactions = transactions;
 		this.nonce = nonce;
 		this.hash = currentHash;
+		this.previousHash = previousBlockHash;
+	}
+
+	public void setNonce(Integer nonce) {
+		this.nonce = nonce;
 	}
 
 	public byte[] toByteArray() {
