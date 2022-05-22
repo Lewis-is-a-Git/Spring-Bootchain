@@ -1,12 +1,12 @@
 package dev.lewisbh.Bootchain.Blockchain;
 
-import java.io.IOException;
 import java.math.BigInteger;
 import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 public class Hash {
 
-	public static String hash(Block block, Integer nonce) throws IOException {
+	public static String hash(Block block, Integer nonce) {
 		try {
 			MessageDigest md = MessageDigest.getInstance("SHA-256");
 
@@ -19,16 +19,15 @@ public class Hash {
 
 			// Convert message digest into hex value
 			String hashtext = no.toString(16);
-
-			while (hashtext.length() < 32) {
+			while (hashtext.length() < 64) {
 				hashtext = "0" + hashtext;
 			}
 
 			return hashtext;
-		} catch (Exception e) {
+		} catch (NoSuchAlgorithmException e) {
 			e.printStackTrace();
 		}
-		return null;
+		return new String();
 	}
 
 }

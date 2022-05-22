@@ -1,11 +1,9 @@
 package dev.lewisbh.Bootchain.Blockchain;
 
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.elasticsearch.common.hash.MurmurHash3.Hash128;
 import org.joda.time.DateTime;
 
 import dev.lewisbh.Bootchain.User.User;
@@ -17,12 +15,17 @@ public class Blockchain {
 
 	public Blockchain() {
 		chain = new ArrayList<>();
+		pendingTransactions = new ArrayList<>();
 	}
 
-	public Block createNewBlock(Integer nonce, Hash128 previousHash, Hash128 currentHash) {
+	public List<Transaction> getPendingTransactions() {
+		return pendingTransactions;
+	}
+
+	public Block createNewBlock(String previousHash) {
 		Integer index = this.chain.size() + 1;
 		DateTime now = DateTime.now();
-		Block block = new Block(index, now, this.pendingTransactions, nonce, currentHash, previousHash);
+		Block block = new Block(index, now, this.pendingTransactions, previousHash);
 
 		pendingTransactions = new ArrayList<Transaction>();
 		this.chain.add(block);
@@ -40,18 +43,13 @@ public class Blockchain {
 	}
 
 	public String hashBlock(Block block, Integer nonce) {
-		try {
-			return Hash.hash(block, nonce);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return null;
+		return Hash.hash(block, nonce);
 	}
 
-	public Integer proofOfWork(Hash128 previousHash) {
-		// hash block until first four characters are 0 -> "0000..."
+	public Integer proofOfWork() {
+		// hash block until first characters are 0 -> "000..."
 		Integer nonce = 0;
-		while (!hashBlock(getLastBlock(), nonce).substring(0, 4).equals("0000")) {
+		while (!hashBlock(getLastBlock(), nonce).startsWith("000")) {
 			nonce++;
 		}
 		return nonce;
