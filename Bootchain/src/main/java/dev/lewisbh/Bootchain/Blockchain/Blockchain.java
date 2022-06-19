@@ -1,16 +1,33 @@
 package dev.lewisbh.Bootchain.Blockchain;
 
-import java.math.BigDecimal;
+import static javax.persistence.GenerationType.SEQUENCE;
+
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+
 import org.joda.time.DateTime;
 
-import dev.lewisbh.Bootchain.User.User;
-
+@Entity(name = "BlockChains")
+@Table(name = "blockchains")
 public class Blockchain {
 
+	@Id
+	@SequenceGenerator(name = "blockchain_sequence", sequenceName = "blockchain_sequence", allocationSize = 1)
+	@GeneratedValue(strategy = SEQUENCE, generator = "blockchain_sequence")
+	@Column(name = "id")
+	private long id;
+
+	@Column(name = "blocks", columnDefinition = "TEXT")
 	private List<Block> chain;
+
+	@Column(name = "pending_transactions", columnDefinition = "TEXT")
 	private List<Transaction> pendingTransactions;
 
 	public Blockchain() {
@@ -36,9 +53,8 @@ public class Blockchain {
 		return this.chain.get(chain.size() - 1);
 	}
 
-	public Integer createNewTransaction(BigDecimal amount, User sender, User recipient) {
-		pendingTransactions.add(new Transaction(amount, sender, recipient));
-
+	public Integer addNewTransaction(Transaction transaction) {
+		pendingTransactions.add(transaction);
 		return getLastBlock().index + 1;
 	}
 
@@ -46,7 +62,7 @@ public class Blockchain {
 		return Hash.hash(block, nonce);
 	}
 
-	public Integer proofOfWork() {
+	public Integer mine() {
 		// hash block until first characters are 0 -> "000..."
 		Integer nonce = 0;
 		while (!hashBlock(getLastBlock(), nonce).startsWith("000")) {

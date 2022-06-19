@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 import org.junit.Test;
 
 import dev.lewisbh.Bootchain.Blockchain.Blockchain;
+import dev.lewisbh.Bootchain.Blockchain.Transaction;
 import dev.lewisbh.Bootchain.User.User;
 
 public class BlockchainTest {
@@ -29,7 +30,8 @@ public class BlockchainTest {
 		bitcoin.createNewBlock(previousBlockHash);
 		User sender = new User(1, "Lewis", "password");
 		User recipient = new User(2, "Rocky", "password");
-		bitcoin.createNewTransaction(amount, sender, recipient);
+		Transaction transaction = new Transaction(amount, sender, recipient);
+		bitcoin.addNewTransaction(transaction);
 
 		assertEquals(1, bitcoin.getPendingTransactions().size());
 	}
@@ -38,7 +40,7 @@ public class BlockchainTest {
 	public void testProofOfWork() {
 		Blockchain bitcoin = new Blockchain();
 		bitcoin.createNewBlock(previousBlockHash);
-		Integer nonce = bitcoin.proofOfWork();
+		Integer nonce = bitcoin.mine();
 
 		System.out.println(nonce);
 

@@ -76,7 +76,7 @@ public class User {
 	@Column(name = "username", nullable = false, columnDefinition = "TEXT")
 	private String username;
 
-	@Column(name = "balance", nullable = false)
+	@Column(name = "balance", nullable = false, columnDefinition = "MONEY")
 	private BigDecimal balance;
 
 	@Column(name = "password", nullable = false, columnDefinition = "TEXT")
